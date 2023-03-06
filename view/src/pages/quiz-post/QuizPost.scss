@@ -1,0 +1,12 @@
+.QuizPost {
+  margin: 1rem;
+  .quiz-title {
+    display: block;
+    margin: 1rem 0;
+  }
+  .add-question {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 2rem;
+  }
+}
