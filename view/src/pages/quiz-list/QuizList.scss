@@ -1,0 +1,13 @@
+.QuizList {
+  .quiz {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: #e6f7ff;
+    border-radius: 8px;
+    border: 1px solid #c3dafe;
+    margin: 1rem;
+    padding: 0 1rem;
+  }
+}

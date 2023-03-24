@@ -1,17 +1,18 @@
 import "./QuizPost.scss";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+// import axios from "../../services/axios";
+import PostQuestion from "../../components/post-question/PostQuestion";
 import axios from "axios";
-import SingleQuestion from "../../components/single-question/SingleQuestion";
 const initState = {
-  questionText: null,
-  questionType: null,
-  options: [null],
+  questionText: "",
+  questionType: "",
+  options: [],
   correctAnswerIndex: [],
 };
 export default function QuizPost() {
   const [questions, setQuestions] = useState([initState]);
-  const [quizTitle, setQuizTitle] = useState(null);
+  const [quizTitle, setQuizTitle] = useState("");
 
   function handleQuizTitle(event) {
     setQuizTitle(event.target.value);
@@ -27,7 +28,7 @@ export default function QuizPost() {
       ...questions.slice(index + 1),
     ]);
   }
-  console.log({ questions });
+  // console.log({ questions });
 
   function removeQuestion(questionIndex) {
     return (e) => {
@@ -39,7 +40,7 @@ export default function QuizPost() {
   }
   function postQuiz() {
     axios
-      .post("http://localhost:5000/api/quiz", {
+      .post("/api/quiz", {
         quizTitle,
         questions,
       })
@@ -50,6 +51,7 @@ export default function QuizPost() {
       });
     console.log({ quizTitle, questions });
   }
+
   return (
     <div className="QuizPost">
       <Link to="/">Back</Link>
@@ -63,7 +65,7 @@ export default function QuizPost() {
       <button onClick={postQuiz}>Post Quiz</button>
       <div>
         {questions.map((q, questionIndex) => (
-          <SingleQuestion
+          <PostQuestion
             key={"question" + questionIndex}
             question={q}
             questionIndex={questionIndex}

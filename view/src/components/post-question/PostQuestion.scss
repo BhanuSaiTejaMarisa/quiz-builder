@@ -1,0 +1,53 @@
+.PostQuestion {
+  background: #eee;
+  box-shadow: 0 8px 8px -4px lightblue;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 2rem;
+  .accordion-toggle {
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="none" d="M0 0h24v24H0V0z"/%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .accordion-toggle.rotate {
+    transform: rotate(180deg);
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content-header {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  .question-types {
+    input {
+      margin-right: 0.5rem;
+    }
+  }
+  .question-text-container {
+    margin: 1rem;
+    display: flex;
+    gap: 1rem;
+    .question-text {
+      width: 60%;
+      //   display: block;
+      padding: 0.5rem;
+    }
+  }
+  .options-container {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1rem;
+  }
+
+  .remove-question {
+  }
+}

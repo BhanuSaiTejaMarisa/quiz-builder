@@ -1,11 +1,8 @@
-import "./SingleQuestion.scss";
+import "./PostQuestion.scss";
 import React, { useState } from "react";
 import { typeOfQuestions } from "./singleQuestionData";
-// const initState = {
-//   questionType: null,
-//   options: [{ option: null }],
-// };
-export default function SingleQuestion({
+
+export default function PostQuestion({
   question,
   questionIndex,
   updateQuestion,
@@ -17,18 +14,21 @@ export default function SingleQuestion({
   const handleQuestionTypeChange = (event) => {
     const { value } = event.target;
 
-    if (value === "binary") {
-      const binaryOptionsInitState = [null, null];
+    if (value === "binary" || value === "ss") {
+      const binaryOptionsInitState = ["", ""];
       updateQuestion({
         ...question,
         questionType: event.target.value,
         options: binaryOptionsInitState,
+        correctAnswerIndex: ""
       });
-    } else {
+    }
+    if (value === "mcq") {
       updateQuestion({
         ...question,
         questionType: event.target.value,
-        options: [null],
+        options: [""],
+        correctAnswerIndex: [0]
       });
     }
   };
@@ -42,17 +42,16 @@ export default function SingleQuestion({
   };
 
   function addOption() {
-    if (
-      ((questionType === "mcq" || questionType === "ss") &&
-        options.length < 5) ||
-      (questionType === "binary" && options.length < 2)
-    ) {
-      updateQuestion({ ...question, options: [...options, null] });
+    if (questionType === "mcq" && options.length < 5) {
+      updateQuestion({ ...question, options: [...options, ""], correctAnswerIndex: [...correctAnswerIndex, 0] });
+    }
+    if ((questionType === "binary" && options.length < 2) || (questionType === "ss" && options.length < 5)) {
+      updateQuestion({ ...question, options: [...options, ""], correctAnswerIndex: "" });
     }
   }
 
   function checkOptions() {
-    console.log({ questionType: !questionType, questionIndex });
+    // console.log({ questionType: !questionType, questionIndex });
     if (!questionType) {
       return true;
     }
@@ -76,25 +75,39 @@ export default function SingleQuestion({
       ...options.slice(0, optionIndex),
       ...options.slice(optionIndex + 1),
     ];
+    if (questionType === "mcq") {
+      let newCorrectAnswers = [
+        ...correctAnswerIndex.slice(0, optionIndex),
+        ...correctAnswerIndex.slice(optionIndex + 1)
+      ]
+      updateQuestion({ ...question, options: newOptions, correctAnswerIndex: newCorrectAnswers });
+      return
+    }
 
     updateQuestion({ ...question, options: newOptions });
   }
   function handleCorrectAnswer(optionIndex) {
     return (e) => {
-      let newOptions;
-      if (e.target.checked) {
-        newOptions = [...correctAnswerIndex];
-        newOptions.push(optionIndex);
-      } else {
-        newOptions = correctAnswerIndex.filter(
-          (value) => value !== optionIndex
-        );
+
+      if (questionType === "mcq") {
+        if (e.target.checked) {
+          correctAnswerIndex[optionIndex] = 1
+        }
+        else {
+          correctAnswerIndex[optionIndex] = 0
+        }
+        updateQuestion({ ...question, correctAnswerIndex })
+        return;
       }
-      updateQuestion({ ...question, correctAnswerIndex: newOptions });
+
+      if ((questionType === "ss" || questionType === "binary") && e.target.checked) {
+        updateQuestion({ ...question, correctAnswerIndex: optionIndex })
+      }
+
     };
   }
   return (
-    <div className="SingleQuestion">
+    <div className="PostQuestion">
       <div className="header">
         <p>Question {questionIndex + 1}</p>
         <button
@@ -141,22 +154,22 @@ export default function SingleQuestion({
           {questionType && (
             <div className="options-container">
               {options.map((option, optionIndex) => (
-                <div>
+                <div key={optionIndex + "options" + questionIndex}>
                   <input
                     type="text"
                     placeholder={"Option " + (optionIndex + 1)}
                     onChange={handleOptionChange(optionIndex)}
-                    key={optionIndex + "options" + questionIndex}
                     value={option}
                   />
                   <button onClick={() => removeOption(optionIndex)}>
                     <i className="fas fa-times"></i>
                   </button>
                   <input
-                    type="checkbox"
+                    type={questionType === "mcq" ? "checkbox" : "radio"}
                     onChange={handleCorrectAnswer(optionIndex)}
                     name={"correctOptions" + questionIndex}
                     value={optionIndex}
+                    checked={questionType === "mcq" ? 1 === correctAnswerIndex[optionIndex] : correctAnswerIndex === optionIndex}
                   />
                 </div>
               ))}

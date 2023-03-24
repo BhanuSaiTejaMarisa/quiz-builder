@@ -7,6 +7,9 @@ export default function Home() {
       <Link to="quiz">
         <button>Post a Quiz</button>
       </Link>
+      <Link to="quiz-list">
+        <button>Attempt Quizzes</button>
+      </Link>
     </div>
   );
 }

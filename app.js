@@ -25,16 +25,16 @@ app.use(express.json());
 app.use("/api", routes);
 
 // Serve the frontend files as static files
-app.use(
-  express.static(path.join("./view/public/index.html", "frontend/build"))
-);
+// app.use(
+//   express.static(path.join("./view/public/index.html", "frontend/build"))
+// );
 
 // Catch all other requests and return the frontend index.html file
-app.get("*", (req, res) => {
-  res.sendFile(
-    path.join("./view/public/index.html", "frontend/build/index.html")
-  );
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(
+//     path.join("./view/public/index.html", "frontend/build/index.html")
+//   );
+// });
 
 app.listen(5000, () => {
   console.log("listenig to 5000");
